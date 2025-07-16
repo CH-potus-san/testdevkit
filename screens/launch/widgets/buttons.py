@@ -1,6 +1,6 @@
-from screens import ColoredButton
+from screens import TDKButton
 
-class TDKLaunchButton(ColoredButton):
+class TDKLaunchButton(TDKButton):
     def __init__(self, txt='button', **kwargs):
         super().__init__(
             **kwargs,

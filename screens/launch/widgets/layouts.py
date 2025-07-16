@@ -1,13 +1,15 @@
-from screens import ColoredBoxLayout, TexturedBoxLayout
+from screens import TDKBoxLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Rectangle, Color, ClearColor
 
 
-class TDKLaunchLayout(TexturedBoxLayout):
+class TDKLaunchLayout(TDKBoxLayout):
     def __init__(self, **kwargs):
         super().__init__(
             **kwargs,
             orientation="vertical",
+            src="./screens/launch/source/launch.png",
+            bg_color=(1, 1, 1, .25),
             rounded=True,
             spacing=15,
             padding=10,
@@ -15,7 +17,7 @@ class TDKLaunchLayout(TexturedBoxLayout):
         )
 
 
-class TDKLaunchButtonsRegionLayout(ColoredBoxLayout):
+class TDKLaunchButtonsRegionLayout(TDKBoxLayout):
     def __init__(self, **kwargs):
         super().__init__(
             **kwargs,
@@ -24,7 +26,7 @@ class TDKLaunchButtonsRegionLayout(ColoredBoxLayout):
             orientation="horizontal"
         )
 
-class TDKLaunchButtonsZoneLayout(ColoredBoxLayout):
+class TDKLaunchButtonsZoneLayout(TDKBoxLayout):
     def __init__(self, **kwargs):
         super().__init__(
             **kwargs,
