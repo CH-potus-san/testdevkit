@@ -1,4 +1,4 @@
-from screens.widgets import ColoredButton
+from screens import ColoredButton
 
 class TDKLaunchButton(ColoredButton):
     def __init__(self, txt='button', **kwargs):

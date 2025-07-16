@@ -2,8 +2,8 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
-from screens.widgets.layouts import TDKLaunchButtonsRegionLayout, TDKLaunchLayout, TDKLaunchButtonsZoneLayout
-from screens.widgets.buttons import TDKLaunchButton
+from screens.launch.widgets.layouts import TDKLaunchButtonsRegionLayout, TDKLaunchLayout, TDKLaunchButtonsZoneLayout
+from screens.launch.widgets.buttons import TDKLaunchButton
 
 def add_widgets(layout, widgets):
     for widget in widgets:
@@ -20,7 +20,7 @@ class TDKScreenLaunch(Screen):
         buttonZoneLayout = TDKLaunchButtonsZoneLayout()
         buttonCreditsLayout = BoxLayout(orientation="horizontal")
         buttonActionsLayout = BoxLayout(
-            orientation="horizontal", spacing=25
+            orientation="horizontal"
         )
         # Build the broader region these buttons will occupy
         buttonRegionLayout = TDKLaunchButtonsRegionLayout()
