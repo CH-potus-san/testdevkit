@@ -1,0 +1,1 @@
+Attempt to build an interactive media development kit almost entirely in Python by integrating the Blender's Python hooks, Panda3D's open source library, and Kivy's OpenGL support on top of a locally handled SQLite3 database.
