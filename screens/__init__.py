@@ -50,7 +50,8 @@ class TDKButton(Button):
         bg_color=(1, 1, 1, 1),
         bg_color_down=(0.7, 0.7, 1, 1),
         bg_src="",
-        fg_color=(1, 1, 1, 0),
+        fg_color=(1, 1, 1, 1),
+        fg_color_down=(0.6, 0.6, 0.6, 1),
         fg_src="",
         rounded=False,
         **kwargs
@@ -61,6 +62,7 @@ class TDKButton(Button):
         self._bg_color_down = bg_color_down
         self._bg_src = bg_src
         self._fg_color = fg_color
+        self._fg_color_down = fg_color_down
         self._fg_src = fg_src
 
         self.background_normal = ""
@@ -90,11 +92,18 @@ class TDKButton(Button):
         self.bg_rect.size = self.size
         self.fg_rect.pos = self.pos
         self.fg_rect.size = self.size
-        self.font_size = self.width ** (1/1.75)
+        self.font_size = self.width ** (1 / 1.75)
 
     def _on_state(self, *args):
         self.bg_color_instruction.rgba = (
-            self._bg_color_down if self.state == "down" else self._bg_color
+            self._bg_color_down 
+            if self.state == "down" 
+            else self._bg_color
+        )
+        self.fg_color_instruction.rgba = (
+            self._fg_color_down
+            if self.state == "down"
+            else self._fg_color
         )
 
     @property
@@ -131,6 +140,14 @@ class TDKButton(Button):
     def fg_color(self, value):
         self._fg_color = value
         self.fg_color_instruction.rgba = value
+
+    @property
+    def fg_color_down(self):
+        return self._fg_color_down
+
+    @fg_color_down.setter
+    def fg_color_down(self, value):
+        self._fg_color_down = value
 
     @property
     def fg_src(self):
