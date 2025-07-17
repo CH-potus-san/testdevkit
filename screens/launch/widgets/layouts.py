@@ -8,7 +8,7 @@ class TDKLaunchLayout(TDKBoxLayout):
         super().__init__(
             **kwargs,
             orientation="vertical",
-            src="./screens/launch/source/launch.png",
+            src="./screens/source/launch.png",
             bg_color=(1, 1, 1, .25),
             rounded=True,
             spacing=15,
