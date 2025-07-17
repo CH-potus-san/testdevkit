@@ -1,7 +1,4 @@
 from screens import TDKBoxLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.graphics import Rectangle, Color, ClearColor
-
 
 class TDKLaunchLayout(TDKBoxLayout):
     def __init__(self, **kwargs):
