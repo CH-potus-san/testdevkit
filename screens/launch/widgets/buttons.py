@@ -6,7 +6,7 @@ class TDKLaunchButton(TDKButton):
             **kwargs,
             rounded=True,
             bg_color=(0.9, 0.8, 0.75, 1),
-            bg_color_down=(0.75, 0.5, 0.9, 1),
+            bg_color_down=(0.66, 0.9, 0.45, 1),
             bg_src="./screens/source/button.png",
             fg_color=(0.8, 0.65, 0.65, .8),
             fg_color_down=(0.5, 0.35, 0.35, 1),
