@@ -10,11 +10,14 @@ class TDKBoxLayout(BoxLayout):
         bg_src=None,
         bg_color=(1, 1, 1, 1),
         fg_src="",
-        fg_color=(1, 1, 1, 1),
+        fg_color=(1, 1, 1, 0),
+        fg_scale=(1.015, 1.033),
         rounded=False,
         **kwargs
     ):
         super().__init__(**kwargs)
+
+        self.fg_scale = fg_scale
 
         self._bg_color = bg_color
         self._bg_src = bg_src
@@ -28,17 +31,43 @@ class TDKBoxLayout(BoxLayout):
                 if not rounded
                 else RoundedRectangle(source=self._bg_src, pos=self.pos, size=self.size)
             )
-        
+
         with self.canvas.after:
+            fg_width = self.size[0] * self.fg_scale[0]
+            fg_height = self.size[1] * self.fg_scale[1]
             self.fg_color_instruction = Color(*self._fg_color)
             self.fg_rect = (
-                Rectangle(source=self._fg_src, pos=self.pos, size=self.size)
+                Rectangle(
+                    source=self._fg_src,
+                    pos=(
+                        (self.x - fg_width - self.width) / 2,
+                        (self.y - fg_height - self.height) / 2,
+                    ),
+                    size=(fg_width, fg_height),
+                )
                 if not rounded
-                else RoundedRectangle(source=self._fg_src, pos=self.pos, size=self.size)
+                else RoundedRectangle(
+                    source=self._fg_src,
+                    pos=(
+                        (self.x - fg_width - self.width) / 2,
+                        (self.y - fg_height - self.height) / 2,
+                    ),
+                    size=(fg_width, fg_height),
+                )
             )
 
-
         self.bind(pos=self._update_bg, size=self._update_bg)
+
+    def _update_bg(self, *args):
+        fg_width = self.size[0] * self.fg_scale[0]
+        fg_height = self.size[1] * self.fg_scale[1]
+        self.bg_rect.pos = self.pos
+        self.bg_rect.size = self.size
+        self.fg_rect.pos = (
+            self.x - (fg_width - self.width) / 2,
+            self.y - (fg_height - self.height) / 2,
+        )
+        self.fg_rect.size = (fg_width, fg_height)
 
     @property
     def bg_color(self):
@@ -75,12 +104,6 @@ class TDKBoxLayout(BoxLayout):
     def fg_src(self, src):
         self._fg_src = src
         self.fg_rect.source = src
-
-    def _update_bg(self, *args):
-        self.bg_rect.pos = self.pos
-        self.bg_rect.size = self.size
-        self.fg_rect.pos = self.pos
-        self.fg_rect.size = self.size
 
 
 class TDKButton(Button):
