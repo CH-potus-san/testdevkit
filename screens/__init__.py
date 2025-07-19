@@ -1,6 +1,7 @@
 # Import widgets used in this library to add necessary background properties and setters
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle, RoundedRectangle, BoxShadow
 
 
@@ -11,7 +12,7 @@ class TDKBoxLayout(BoxLayout):
         bg_color=(1, 1, 1, 1),
         fg_src="",
         fg_color=(1, 1, 1, 0),
-        fg_scale=(1.015, 1.033),
+        fg_scale=(1.015, 1.015),
         rounded=False,
         **kwargs
     ):
@@ -25,20 +26,20 @@ class TDKBoxLayout(BoxLayout):
         self._fg_src = fg_src
 
         with self.canvas.before:
-            self.bg_color_instruction = Color(*self._bg_color)
+            self.bg_color_instruction = Color(*self.bg_color)
             self.bg_rect = (
-                Rectangle(source=self._bg_src, pos=self.pos, size=self.size)
+                Rectangle(source=self.bg_src, pos=self.pos, size=self.size)
                 if not rounded
-                else RoundedRectangle(source=self._bg_src, pos=self.pos, size=self.size)
+                else RoundedRectangle(source=self.bg_src, pos=self.pos, size=self.size)
             )
 
         with self.canvas.after:
             fg_width = self.size[0] * self.fg_scale[0]
             fg_height = self.size[1] * self.fg_scale[1]
-            self.fg_color_instruction = Color(*self._fg_color)
+            self.fg_color_instruction = Color(*self.fg_color)
             self.fg_rect = (
                 Rectangle(
-                    source=self._fg_src,
+                    source=self.fg_src,
                     pos=(
                         (self.x - fg_width - self.width) / 2,
                         (self.y - fg_height - self.height) / 2,
@@ -206,6 +207,141 @@ class TDKButton(Button):
     @fg_color_down.setter
     def fg_color_down(self, value):
         self._fg_color_down = value
+
+    @property
+    def fg_src(self):
+        return self._fg_src
+
+    @fg_src.setter
+    def fg_src(self, src):
+        self._fg_src = src
+        self.fg_rect.source = src
+
+
+class TDKLabel(Label):
+    def __init__(
+        self,
+        sh_color=(0, 0, 1, 0.85),
+        bg_src=None,
+        bg_color=(1, 1, 1, 1),
+        fg_src="",
+        fg_color=(1, 1, 1, 0),
+        fg_scale=(1.015, 1.015),
+        rect_padding=(20, 10),
+        rounded=False,
+        **kwargs
+    ):
+        super().__init__(**kwargs)
+
+        self.fg_scale = fg_scale
+        self.rect_padding = rect_padding
+
+        self._sh_color = sh_color
+        self._bg_color = bg_color
+        self._bg_src = bg_src
+        self._fg_color = fg_color
+        self._fg_src = fg_src
+
+        with self.canvas.before:
+            self.sh_color_instruction = Color(*self.sh_color)
+            self.shadow = BoxShadow(
+                pos=self.pos,
+                size=self.size,
+                offset=(0, -10),
+                spread_radius=(-20, -20),
+                blur_radius=75,
+            )
+            self.bg_color_instruction = Color(*self.bg_color)
+            self.bg_rect = (
+                Rectangle(source=self.bg_src, pos=self.pos, size=self.size)
+                if not rounded
+                else RoundedRectangle(source=self._bg_src, pos=self.pos, size=self.size)
+            )
+
+        with self.canvas.after:
+            fg_width = self.size[0] * self.fg_scale[0]
+            fg_height = self.size[1] * self.fg_scale[1]
+            self.fg_color_instruction = Color(*self.fg_color)
+            self.fg_rect = (
+                Rectangle(
+                    source=self.fg_src,
+                    pos=(
+                        (self.x - fg_width - self.width) / 2,
+                        (self.y - fg_height - self.height) / 2,
+                    ),
+                    size=(fg_width, fg_height),
+                )
+                if not rounded
+                else RoundedRectangle(
+                    source=self.fg_src,
+                    pos=(
+                        (self.x - fg_width - self.width) / 2,
+                        (self.y - fg_height - self.height) / 2,
+                    ),
+                    size=(fg_width, fg_height),
+                )
+            )
+
+        self.bind(pos=self._update_bg, size=self._update_bg)
+
+    def _update_bg(self, *args):
+        text_width, text_height = self.texture_size
+        pad_x, pad_y = self.rect_padding
+
+        rect_x = self.center_x - text_width / 2 - pad_x
+        rect_y = self.center_y - text_height / 2 - pad_y
+        rect_w = text_width + pad_x * 2
+        rect_h = text_height + pad_y * 2
+
+        fg_width = rect_w * self.fg_scale[0]
+        fg_height = rect_h * self.fg_scale[1]
+
+        self.shadow.pos = (rect_x, rect_y)
+        self.shadow.size = (rect_w, rect_h)
+        self.bg_rect.pos = (rect_x, rect_y)
+        self.bg_rect.size = (rect_w, rect_h)
+
+        self.fg_rect.pos = (
+            self.x - (fg_width - self.width) / 2,
+            self.y - (fg_height - self.height) / 2,
+        )
+        self.fg_rect.size = (fg_width, fg_height)
+
+    @property
+    def sh_color(self):
+        return self._sh_color
+
+    @sh_color.setter
+    def sh_color(self, value):
+        self._sh_color = value
+        self.sh_color_instruction.rgba = value
+
+    @property
+    def bg_color(self):
+        return self._bg_color
+
+    @bg_color.setter
+    def bg_color(self, value):
+        self._bg_color = value
+        self.bg_color_instruction.rgba = value
+
+    @property
+    def bg_src(self):
+        return self._bg_src
+
+    @bg_src.setter
+    def bg_src(self, src):
+        self._bg_src = src
+        self.bg_rect.source = src
+
+    @property
+    def fg_color(self):
+        return self._fg_color
+
+    @fg_color.setter
+    def fg_color(self, value):
+        self._fg_color = value
+        self.fg_color_instruction.rgba = value
 
     @property
     def fg_src(self):

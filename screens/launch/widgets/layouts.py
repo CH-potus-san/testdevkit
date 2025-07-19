@@ -10,21 +10,17 @@ class TDKLaunchLayout(TDKBoxLayout):
         orientation="vertical",
         bg_src="./screens/source/launch.png",
         bg_color=(1, 1, 1, 0.25),
-        fg_src="",
-        fg_color=(1, 1, 1, 0),
         rounded=True,
         spacing=15,
         padding=10,
         size_hint_min=(1.0, 0.3),
         **kwargs
     ):
-        #Pass relevant parameters to the parent class like a baton with unexpected changes
+        #Pass relevant parameters above to the parent class like a baton with unexpected changes
         super().__init__(
             orientation=orientation,
             bg_src=bg_src,
             bg_color=bg_color,
-            fg_src=fg_src,
-            fg_color=fg_color,
             rounded=rounded,
             spacing=spacing,
             padding=padding,

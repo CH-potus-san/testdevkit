@@ -7,6 +7,7 @@ from screens.launch.widgets.layouts import (
     TDKLaunchButtonsZoneLayout,
 )
 from screens.launch.widgets.buttons import TDKLaunchButton
+from screens.launch.widgets.labels import TDKHeaderLabel
 
 
 def add_widgets(layout, widgets):
@@ -32,8 +33,8 @@ class TDKScreenLaunch(Screen):
         licenseLabelLayout = BoxLayout(orientation="vertical", size_hint=(1, 0.33))
 
         # Build the Title and Version labels that will populate the header
-        headerTitle = Label(text="Test Development Kit", font_size="40pt", bold=True)
-        headerVersion = Label(text="Henkins0", font_size="20pt")
+        headerTitle = TDKHeaderLabel(text="Test Development Kit", font_size="40pt", bold=True)
+        headerVersion = TDKHeaderLabel(text="Henkins0", font_size="20pt")
         # Build the layout the labels will lay on top of each other within.
         add_widgets(headerLayout, [headerTitle, headerVersion])
 
