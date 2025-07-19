@@ -12,7 +12,7 @@ class TDKBoxLayout(BoxLayout):
         bg_src="./screens/source/empty.png",
         bg_color=(1, 1, 1, 1),
         fg_src="./screens/source/empty.png",
-        fg_color=(1, 1, 1, 0),
+        fg_color=(1, 1, 1, 1),
         fg_scale=(1.015, 1.015),
         rounded=False,
         **kwargs
@@ -22,7 +22,7 @@ class TDKBoxLayout(BoxLayout):
         if not sh_color:
             br, bg, bb, ba = bg_color
             fr, fg, fb, fa = fg_color
-            sh_color = (round(1-br*fr, 2), round(1-bg*fg, 2), round(1-bb*fb, 2), round(1-ba*fa))
+            sh_color = (round(br*fr, 2), round(bg*fg, 2), round(bb*fb, 2), round(ba*fa))
 
         self.fg_scale = fg_scale
 
@@ -33,6 +33,7 @@ class TDKBoxLayout(BoxLayout):
         self._fg_src = fg_src
 
         with self.canvas.before:
+            print(self.sh_color)
             self.sh_color_instruction = Color(*self.sh_color)
             self.shadow = BoxShadow(
                 pos=self.pos,
@@ -137,12 +138,12 @@ class TDKButton(Button):
     def __init__(
         self,
         sh_color=None,
+        bg_src="./screens/source/empty.png",
         bg_color=(1, 1, 1, 1),
-        bg_color_down=(0.7, 0.7, 1, 1),
-        bg_src="",
+        fg_src="./screens/source/empty.png",
         fg_color=(1, 1, 1, 1),
+        bg_color_down=(0.7, 0.7, 1, 1),
         fg_color_down=(0.6, 0.6, 0.6, 1),
-        fg_src="",
         rounded=False,
         **kwargs
     ):
@@ -274,7 +275,7 @@ class TDKLabel(Label):
     def __init__(
         self,
         sh_color=None,
-        bg_src=None,
+        bg_src="./screens/source/empty.png",
         bg_color=(1, 1, 1, 1),
         fg_src="./screens/source/empty.png",
         fg_color=(1, 1, 1, 1),

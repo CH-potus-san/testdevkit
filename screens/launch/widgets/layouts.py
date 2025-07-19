@@ -9,7 +9,7 @@ class TDKLaunchLayout(TDKBoxLayout):
         self,
         orientation="vertical",
         bg_src=None, #"./screens/source/launch.png",
-        bg_color=(.6, .6, .6, 1),
+        bg_color=(.0, .0, .0, 1),
         rounded=True,
         spacing=15,
         padding=10,
