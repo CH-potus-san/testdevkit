@@ -8,8 +8,8 @@ class TDKLaunchLayout(TDKBoxLayout):
     def __init__(
         self,
         orientation="vertical",
-        bg_src="./screens/source/launch.png",
-        bg_color=(1, 1, 1, 0.25),
+        bg_src=None, #"./screens/source/launch.png",
+        bg_color=(.6, .6, .6, 1),
         rounded=True,
         spacing=15,
         padding=10,
