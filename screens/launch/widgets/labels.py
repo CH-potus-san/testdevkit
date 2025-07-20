@@ -4,6 +4,7 @@ from screens import TDKLabel
 class TDKHeaderLabel(TDKLabel):
     def __init__(
         self,
+        text="TestDevelopmentKit",
         bg_color=(.99, .99, .99, .6),
         fg_src='./screens/source/buttborder.png',
         fg_color=(.5, .4, .4, .3),
@@ -15,5 +16,6 @@ class TDKHeaderLabel(TDKLabel):
             bg_color=bg_color,
             fg_color=fg_color,
             rounded=rounded,
+            text=text,
             **kwargs
         )

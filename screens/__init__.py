@@ -2,8 +2,9 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle, RoundedRectangle, BoxShadow
-
+#TODO: Shadow parameter setters AFTER work starts on theming
 
 class TDKBoxLayout(BoxLayout):
     def __init__(
@@ -17,12 +18,24 @@ class TDKBoxLayout(BoxLayout):
         rounded=False,
         **kwargs
     ):
+        """Kivy BoxLayout widget with added drawing customization for BoxShadow implementation,
+        background drawing via with.canvas.before, and foreground drawing via with.canvas.after
+
+        Args:
+            sh_color (tuple, optional): RGBA tuple. If None, will use half the product of the foreground and background RGBA values (round(fg_color*bg_color/2, 2)) to calculate a shadow color. \nSetting the alpha of any sh_color, fg_color, or bg_color will disable the shadow. \nDefaults to None.
+            bg_src (str, optional): Source path for background image. May be deprecated in future versions. Defaults to "./screens/source/empty.png".
+            bg_color (tuple, optional): RGBA tuple. Defaults to (1, 1, 1, 1).
+            fg_src (str, optional): Source path for foreground image. Recommended for semi-transparent overlays or non-interactive HUD drawings. Because of current calculations for shadows, defaults to a fully transparent image. Defaults to "./screens/source/empty.png".
+            fg_color (tuple, optional): RGBA tuple. Because automatically-generated shadows need work, currently defaults alpha value to 1. Defaults to (1, 1, 1, 1).
+            fg_scale (tuple, optional): (x_multiplier, y_multiplier). Values with which to multiply the size of the foreground overlay for image overlap effects. Defaults to (1.015, 1.015).
+            rounded (bool, optional): Option flag for using RoundedRectangles for element drawing. Defaults to False.
+        """
         super().__init__(**kwargs)
 
         if not sh_color:
             br, bg, bb, ba = bg_color
             fr, fg, fb, fa = fg_color
-            sh_color = (round(br*fr, 2), round(bg*fg, 2), round(bb*fb, 2), round(ba*fa))
+            sh_color = (round(br*fr/2, 2), round(bg*fg/2, 2), round(bb*fb/2, 2), round(ba*fa))
 
         self.fg_scale = fg_scale
 
@@ -33,7 +46,6 @@ class TDKBoxLayout(BoxLayout):
         self._fg_src = fg_src
 
         with self.canvas.before:
-            print(self.sh_color)
             self.sh_color_instruction = Color(*self.sh_color)
             self.shadow = BoxShadow(
                 pos=self.pos,
@@ -147,12 +159,24 @@ class TDKButton(Button):
         rounded=False,
         **kwargs
     ):
+        """Kivy Button widget with added drawing customization for BoxShadow implementation,
+        background drawing via with.canvas.before, and foreground drawing via with.canvas.after
+
+        Args:
+            sh_color (tuple, optional): RGBA tuple. If None, will use half the product of the foreground and background RGBA values (round(fg_color*bg_color/2, 2)) to calculate a shadow color. \nSetting the alpha of any sh_color, fg_color, or bg_color will disable the shadow. \nDefaults to None.
+            bg_src (str, optional): Source path for background image. May be deprecated in future versions. Defaults to "./screens/source/empty.png".
+            bg_color (tuple, optional): RGBA tuple. Defaults to (1, 1, 1, 1).
+            fg_src (str, optional): Source path for foreground image. Recommended for semi-transparent overlays or non-interactive HUD drawings. Because of current calculations for shadows, defaults to a fully transparent image. Defaults to "./screens/source/empty.png".
+            fg_color (tuple, optional): RGBA tuple. Because automatically-generated shadows need work, currently defaults alpha value to 1. Defaults to (1, 1, 1, 1).
+            fg_scale (tuple, optional): (x_multiplier, y_multiplier). Values with which to multiply the size of the foreground overlay for image overlap effects. Defaults to (1.015, 1.015).
+            rounded (bool, optional): Option flag for using RoundedRectangles for element drawing. Defaults to False.
+        """
         super().__init__(**kwargs)
 
         if not sh_color:
             br, bg, bb, ba = bg_color
             fr, fg, fb, fa = fg_color
-            sh_color = (round(1-br*fr, 2), round(1-bg*fg, 2), round(1-bb*fb, 2), round(1-ba*fa))
+            sh_color = (round(br*fr/2, 2), round(bg*fg/2, 2), round(bb*fb/2, 2), round(ba*fa, 2))
 
         self._sh_color = sh_color
         self._bg_color = bg_color
@@ -171,7 +195,7 @@ class TDKButton(Button):
                 pos=self.pos,
                 size=self.size,
                 offset=(0, -10),
-                spread_radius=(-20, -20),
+                spread_radius=(-10, -10),
                 blur_radius=75,
             )
             self.bg_color_instruction = Color(*self._bg_color)
@@ -284,12 +308,24 @@ class TDKLabel(Label):
         rounded=False,
         **kwargs
     ):
+        """Kivy Label widget with added drawing customization for BoxShadow implementation,
+        background drawing via with.canvas.before, and foreground drawing via with.canvas.after
+
+        Args:
+            sh_color (tuple, optional): RGBA tuple. If None, will use half the product of the foreground and background RGBA values (round(fg_color*bg_color/2, 2)) to calculate a shadow color. \nSetting the alpha of any sh_color, fg_color, or bg_color will disable the shadow. \nDefaults to None.
+            bg_src (str, optional): Source path for background image. May be deprecated in future versions. Defaults to "./screens/source/empty.png".
+            bg_color (tuple, optional): RGBA tuple. Defaults to (1, 1, 1, 1).
+            fg_src (str, optional): Source path for foreground image. Recommended for semi-transparent overlays or non-interactive HUD drawings. Because of current calculations for shadows, defaults to a fully transparent image. Defaults to "./screens/source/empty.png".
+            fg_color (tuple, optional): RGBA tuple. Because automatically-generated shadows need work, currently defaults alpha value to 1. Defaults to (1, 1, 1, 1).
+            fg_scale (tuple, optional): (x_multiplier, y_multiplier). Values with which to multiply the size of the foreground overlay for image overlap effects. Defaults to (1.015, 1.015).
+            rounded (bool, optional): Option flag for using RoundedRectangles for element drawing. Defaults to False.
+        """
         super().__init__(**kwargs)
 
         if not sh_color:
             br, bg, bb, ba = bg_color
             fr, fg, fb, fa = fg_color
-            sh_color = (round(1-br*fr, 2), round(1-bg*fg, 2), round(1-bb*fb, 2), round(1-ba*fa))
+            sh_color = (round(1-br*fr/2, 2), round(1-bg*fg/2, 2), round(1-bb*fb/2, 2), round(1-ba*fa))
 
         self.fg_scale = fg_scale
         self.rect_padding = rect_padding
@@ -301,12 +337,13 @@ class TDKLabel(Label):
         self._fg_src = fg_src
 
         with self.canvas.before:
+            self.font_size = self.width ** (1 / 1.75)
             self.sh_color_instruction = Color(*self.sh_color)
             self.shadow = BoxShadow(
                 pos=self.pos,
                 size=self.size,
                 offset=(0, -10),
-                spread_radius=(-20, -20),
+                spread_radius=(-10, -10),
                 blur_radius=75,
             )
             self.bg_color_instruction = Color(*self.bg_color)
@@ -341,8 +378,11 @@ class TDKLabel(Label):
             )
 
         self.bind(pos=self._update_bg, size=self._update_bg)
+        Window.bind(on_maximize=self._update_bg)
+        Window.bind(on_restore=self._update_bg)
 
     def _update_bg(self, *args):
+        self.font_size = round(self.width ** (1 / 1.75))
         text_width, text_height = self.texture_size
         pad_x, pad_y = self.rect_padding
 
