@@ -4,7 +4,9 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle, RoundedRectangle, BoxShadow
-#TODO: Shadow parameter setters AFTER work starts on theming
+
+# TODO: Shadow parameter setters AFTER work starts on theming
+
 
 class TDKBoxLayout(BoxLayout):
     def __init__(
@@ -35,7 +37,12 @@ class TDKBoxLayout(BoxLayout):
         if not sh_color:
             br, bg, bb, ba = bg_color
             fr, fg, fb, fa = fg_color
-            sh_color = (round(br*fr/2, 2), round(bg*fg/2, 2), round(bb*fb/2, 2), round(ba*fa))
+            sh_color = (
+                round(br * fr / 2, 2),
+                round(bg * fg / 2, 2),
+                round(bb * fb / 2, 2),
+                round(ba * fa),
+            )
 
         self.fg_scale = fg_scale
 
@@ -176,7 +183,12 @@ class TDKButton(Button):
         if not sh_color:
             br, bg, bb, ba = bg_color
             fr, fg, fb, fa = fg_color
-            sh_color = (round(br*fr/2, 2), round(bg*fg/2, 2), round(bb*fb/2, 2), round(ba*fa, 2))
+            sh_color = (
+                round(br * fr / 2, 2),
+                round(bg * fg / 2, 2),
+                round(bb * fb / 2, 2),
+                round(ba * fa, 2),
+            )
 
         self._sh_color = sh_color
         self._bg_color = bg_color
@@ -325,8 +337,13 @@ class TDKLabel(Label):
         if not sh_color:
             br, bg, bb, ba = bg_color
             fr, fg, fb, fa = fg_color
-            sh_color = (round(1-br*fr/2, 2), round(1-bg*fg/2, 2), round(1-bb*fb/2, 2), round(1-ba*fa))
-
+            sh_color = (
+                round(1 - br * fr / 2, 2),
+                round(1 - bg * fg / 2, 2),
+                round(1 - bb * fb / 2, 2),
+                round(1 - ba * fa),
+            )
+        self.loaded = False
         self.fg_scale = fg_scale
         self.rect_padding = rect_padding
 
@@ -335,9 +352,9 @@ class TDKLabel(Label):
         self._bg_src = bg_src
         self._fg_color = fg_color
         self._fg_src = fg_src
+        self.window_open = False
 
         with self.canvas.before:
-            self.font_size = self.width ** (1 / 1.75)
             self.sh_color_instruction = Color(*self.sh_color)
             self.shadow = BoxShadow(
                 pos=self.pos,
@@ -346,6 +363,7 @@ class TDKLabel(Label):
                 spread_radius=(-10, -10),
                 blur_radius=75,
             )
+
             self.bg_color_instruction = Color(*self.bg_color)
             self.bg_rect = (
                 Rectangle(source=self.bg_src, pos=self.pos, size=self.size)
@@ -377,12 +395,18 @@ class TDKLabel(Label):
                 )
             )
 
+        Window.bind(on_maximize=self._update_bg, on_restore=self._update_bg, on_show=self._update_bg)
         self.bind(pos=self._update_bg, size=self._update_bg)
-        Window.bind(on_maximize=self._update_bg)
-        Window.bind(on_restore=self._update_bg)
 
     def _update_bg(self, *args):
-        self.font_size = round(self.width ** (1 / 1.75))
+        # Updating the texture is only necessary on the inital app load
+        # TODO: Find Window Screen or Widget events or setup Clock event to check flag to avoid calling this too often
+        # Until then, it only triggers when a label of this class is resized.
+        self.font_size = round(self.size[0] ** (1 / 1.75))
+        self.texture_update()
+        # Why is this a problem for Labels but not Buttons, which are labels with bindings? 
+        # Because labels won't always want or need to fill an entire layout with content
+        # This may facilitate the need for a second base label template in the future (scrawl class?)
         text_width, text_height = self.texture_size
         pad_x, pad_y = self.rect_padding
 
@@ -404,6 +428,7 @@ class TDKLabel(Label):
             self.y - (fg_height - self.height) / 2,
         )
         self.fg_rect.size = (fg_width, fg_height)
+        
 
     @property
     def sh_color(self):
