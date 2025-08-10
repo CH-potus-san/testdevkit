@@ -3,7 +3,7 @@
 #Data from a pre-launch options menu may need to be delivered to the startup sequence after login
 #Some page layouts may be used multiple times; rendering those unique pages will be handled here
 from kivy.uix.screenmanager import Screen
-from screens.launch.widgets.layouts.TDKLaunch import TDKLaunchLayout
+from screens.launch.layouts.TDKLaunch import TDKLaunchLayout
 
 
 
