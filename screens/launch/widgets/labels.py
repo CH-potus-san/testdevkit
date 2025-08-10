@@ -19,3 +19,11 @@ class TDKHeaderLabel(TDKLabel):
             text=text,
             **kwargs
         )
+
+class TDKFooterLabel(TDKLabel):
+    def __init__(
+      self,
+      text="Licensed under the MIT License circa 2025",
+      **kwargs
+    ):
+        super().__init__(text=text, **kwargs)
