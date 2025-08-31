@@ -1,8 +1,9 @@
 # Defaults for element parameters will be set here and instance calls will pass their
 # settings through these templates to the Kivy widgets with added customization functionality.
-from screens import TDKBoxLayout, TDKEmptySpacer, add_widgets
-from screens.launch.widgets.buttons import TDKLaunchButton
-from screens.launch.widgets.labels import TDKHeaderLabel, TDKFooterLabel
+
+from TDKivy import TDKBoxLayout, TDKEmptySpacer, add_widgets
+from TDKivy.buttons.launch import TDKLaunchButton
+from TDKivy.labels.launch import TDKHeaderLabel, TDKFooterLabel
 
 # Elements will be roughly ordered from the inside out
 

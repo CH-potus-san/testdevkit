@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
-from screens.launch.screen import TDKScreenLaunch
+from TDKivy.screens.launch import TDKScreenLaunch
 
 
 class TestDevKit(App):

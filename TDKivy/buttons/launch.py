@@ -1,4 +1,4 @@
-from screens import TDKButton
+from TDKivy import TDKButton
 
 
 class TDKLaunchButton(TDKButton):

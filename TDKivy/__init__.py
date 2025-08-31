@@ -657,3 +657,4 @@ TDKEmptySpacer = lambda **kwargs: TDKBoxLayout(sh_color=(0, 0, 0, 0), fg_scale=(
 def add_widgets(layout, widgets):
     for widget in widgets:
         layout.add_widget(widget)
+
